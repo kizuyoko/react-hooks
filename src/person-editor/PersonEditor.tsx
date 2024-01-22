@@ -4,7 +4,7 @@ import { LabeledInput } from "../components"
 import { initialPerson } from "../utils"
 
 export function PersonEditor(): ReactElement {
-  const [person, setPerson] = useState(initialPerson)
+  const [person, setPerson] = useState(() => initialPerson)
 
   return (
     <form
@@ -19,35 +19,50 @@ export function PersonEditor(): ReactElement {
         label="Firstname:"
         value={person.firstname}
         onChange={(e) => {
-          const newPerson = {
+          setPerson((person) => ({
             ...person,
             firstname: e.target.value,
-          }
-          setPerson(newPerson)
+          }))
+
+          //if (e.target.value === 'Ford') {
+          //setPerson((person) => ({
+          //...person,
+          //surname: 'Prefect',
+          //address: 'Outer space',
+          //email: '',
+          //phone: '',
+          //}))
+          //}
         }}
       />
       <LabeledInput
         label="Surname:"
         value={person.surname}
         onChange={(e) => {
-          const newPerson = { ...person, surname: e.target.value }
-          setPerson(newPerson)
+          setPerson((person) => ({
+            ...person,
+            surname: e.target.value,
+          }))
         }}
       />
       <LabeledInput
         label="Email:"
         value={person.email}
         onChange={(e) => {
-          const newPerson = { ...person, email: e.target.value }
-          setPerson(newPerson)
+          setPerson((person) => ({
+            ...person,
+            email: e.target.value,
+          }))
         }}
       />
       <LabeledInput
         label="Address:"
         value={person.address}
         onChange={(e) => {
-          const newPerson = { ...person, address: e.target.value }
-          setPerson(newPerson)
+          setPerson((person) => ({
+            ...person,
+            address: e.target.value,
+          }))
         }}
       />
       <LabeledInput
@@ -55,7 +70,10 @@ export function PersonEditor(): ReactElement {
         value={person.phone}
         onChange={(e) => {
           const newPerson = { ...person, phone: e.target.value }
-          setPerson(newPerson)
+          setPerson((person) => ({
+            ...person,
+            phone: e.target.value,
+          }))
         }}
       />
       <hr />
