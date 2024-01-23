@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from "react"
+import React, { ReactElement, useRef, useEffect } from "react"
 //import localforage from "localforage"
 
 //import type { Person } from "../types/person"
@@ -9,6 +9,14 @@ import { usePerson } from "./usePerson"
 
 export function PersonEditor(): ReactElement {
   const [person, setPerson] = usePerson(initialPerson)
+  const input = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    setTimeout(() => {
+      input.current?.focus()
+    }, 1000)
+  }, [])
+
   if (!person) {
     return <Loading />
   }
@@ -23,6 +31,7 @@ export function PersonEditor(): ReactElement {
     >
       <h2>Person Editor</h2>
       <LabeledInput
+        ref={input}
         label="Firstname:"
         value={person.firstname}
         onChange={(e) => {
