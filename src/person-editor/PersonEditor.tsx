@@ -57,7 +57,7 @@ export function PersonEditor(): ReactElement {
         value={person.email}
         onChange={(e) => {
           setPerson((person) => ({
-            ...person,
+            ...person!,
             email: e.target.value,
           }))
         }}
@@ -67,7 +67,7 @@ export function PersonEditor(): ReactElement {
         value={person.address}
         onChange={(e) => {
           setPerson((person) => ({
-            ...person,
+            ...person!,
             address: e.target.value,
           }))
         }}
@@ -78,7 +78,7 @@ export function PersonEditor(): ReactElement {
         onChange={(e) => {
           const newPerson = { ...person, phone: e.target.value }
           setPerson((person) => ({
-            ...person,
+            ...person!,
             phone: e.target.value,
           }))
         }}
