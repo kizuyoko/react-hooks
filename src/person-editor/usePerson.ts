@@ -5,6 +5,7 @@ import {
   useDebugValue,
   SetStateAction,
   useReducer,
+  useMemo,
 } from "react"
 import localforage from "localforage"
 
@@ -28,10 +29,7 @@ interface Metadata {
 
 export function usePerson(initialPerson: Person) {
   //const [person, setPerson] = useState<Person | null>(null)
-  //const [metaData, setMetadata] = useState<Metadata>({
-  //  isDirty: false,
-  //  isValid: true,
-  //})
+  //const [metaData, setMetadata] = useState<Metadata>({ isDirty: false, isValid: true })
 
   const [{ person, metadata }, dispatch] = useReducer(personEditorReducer, {
     person: null,
@@ -41,6 +39,18 @@ export function usePerson(initialPerson: Person) {
   const isMounted = useIsMounted()
 
   useDebugValue(person, (p) => `${p?.firstname} ${p?.surname}`)
+
+  const firstAndSurName = useMemo(
+    () => ({
+      firstname: person?.firstname,
+      surname: person?.surname,
+    }),
+    [person?.firstname, person?.surname]
+  )
+
+  useEffect(() => {
+    console.log("firstAndSurName: ", firstAndSurName)
+  }, [firstAndSurName])
 
   useEffect(() => {
     const getPerson = async () => {
@@ -57,12 +67,12 @@ export function usePerson(initialPerson: Person) {
     getPerson()
   }, [initialPerson, isMounted])
 
-  const [, setNow] = useState(new Date())
+  //const [, setNow] = useState(new Date())
 
-  useEffect(() => {
-    const handle = setInterval(() => setNow(new Date()), 500)
-    return () => clearInterval(handle)
-  }, [])
+  //useEffect(() => {
+  //  const handle = setInterval(() => setNow(new Date()), 500)
+  //  return () => clearInterval(handle)
+  //}, [])
 
   const saveFn = useCallback(() => {
     savePerson(person)
