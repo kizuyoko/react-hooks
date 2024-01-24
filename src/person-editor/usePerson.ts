@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, useDebugValue } from "react"
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useDebugValue,
+  SetStateAction,
+} from "react"
 import localforage from "localforage"
 
 import type { Person } from "../types/person"
@@ -13,8 +19,17 @@ function savePerson(person: Person | null): void {
   localforage.setItem("person", person)
 }
 
+interface Metadata {
+  isDirty: boolean
+  isValid: boolean
+}
+
 export function usePerson(initialPerson: Person) {
   const [person, setPerson] = useState<Person | null>(null)
+  const [metaData, setMetadata] = useState<Metadata>({
+    isDirty: false,
+    isValid: true,
+  })
   const isMounted = useIsMounted()
 
   useDebugValue(person, (p) => `${p?.firstname} ${p?.surname}`)
@@ -45,5 +60,10 @@ export function usePerson(initialPerson: Person) {
   useThrottle(saveFn, 10000)
   useWillUnmount(saveFn)
 
-  return [person, setPerson] as const
+  function setPersonAndMeta(value: SetStateAction<Person | null>) {
+    setPerson(value)
+    setMetadata((m) => ({ ...m, isDirty: true }))
+  }
+
+  return [person, setPersonAndMeta, metaData] as const
 }

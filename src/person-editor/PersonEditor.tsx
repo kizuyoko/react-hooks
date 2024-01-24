@@ -8,7 +8,7 @@ import { initialPerson } from "../utils"
 import { usePerson } from "./usePerson"
 
 export function PersonEditor(): ReactElement {
-  const [person, setPerson] = usePerson(initialPerson)
+  const [person, setPerson, { isDirty, isValid }] = usePerson(initialPerson)
   const input = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -94,7 +94,11 @@ export function PersonEditor(): ReactElement {
       />
       <hr />
       <div className="btn-group">
-        <button type="submit" className="btn btn-primary">
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={!isDirty || !isValid}
+        >
           Submit
         </button>
       </div>
