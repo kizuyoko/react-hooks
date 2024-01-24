@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useDebugValue } from "react"
 
 export function useThrottle(fn: () => void, timeout: number): void {
   const previourRef = useRef<(() => void) | null>(null)
@@ -7,6 +7,8 @@ export function useThrottle(fn: () => void, timeout: number): void {
   if (previourRef.current !== fn) {
     currentRef.current = fn
   }
+
+  useDebugValue(currentRef.current, (fn) => fn?.toString())
 
   useEffect(() => {
     const handle = setInterval(() => {
