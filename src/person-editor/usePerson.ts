@@ -5,6 +5,7 @@ import type { Person } from "../types/person"
 import { sleep } from "../utils"
 import { useIsMounted } from "../hooks/useIsMounted"
 import { useDebouce } from "../hooks/useDebounce"
+import { useWillUnmount } from "../hooks/useWillUnmount"
 
 function savePerson(person: Person | null): void {
   console.log("Saving", person)
@@ -38,7 +39,8 @@ export function usePerson(initialPerson: Person) {
     savePerson(person)
   }, [person])
 
-  useDebouce(saveFn, 1000)
+  useDebouce(saveFn, 10000)
+  useWillUnmount(saveFn)
 
   return [person, setPerson] as const
 }
