@@ -6,6 +6,7 @@ import { sleep } from "../utils"
 import { useIsMounted } from "../hooks/useIsMounted"
 import { useDebouce } from "../hooks/useDebounce"
 import { useWillUnmount } from "../hooks/useWillUnmount"
+import { useThrottle } from "../hooks/useThrottle"
 
 function savePerson(person: Person | null): void {
   console.log("Saving", person)
@@ -39,7 +40,7 @@ export function usePerson(initialPerson: Person) {
     savePerson(person)
   }, [person])
 
-  useDebouce(saveFn, 10000)
+  useThrottle(saveFn, 10000)
   useWillUnmount(saveFn)
 
   return [person, setPerson] as const
