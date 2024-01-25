@@ -1,3 +1,9 @@
-import React from "react"
+import React, { useContext } from "react"
 
-import { KimrofObject } from "./Types"
+import { kimrofContext } from "./KimrofContext"
+
+export function useKimrof() {
+  const { values, metadata } = useContext(kimrofContext)
+
+  return { values, metadata } as const
+}

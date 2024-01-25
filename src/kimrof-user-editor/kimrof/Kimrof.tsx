@@ -9,25 +9,29 @@ import { kimrofReducer } from "./kimrofReducer"
 interface Props<TData> {
   children: ReactNode
   initialValues: TData
+  onSubmit: (values: TData) => void
 }
 
 export function Kimrof<TData extends KimrofObject>({
   children,
   initialValues,
+  onSubmit,
 }: Props<TData>): ReactElement {
-  const [{ values }, dispatch] = useReducer(kimrofReducer, {
+  const [{ values, metadata }, dispatch] = useReducer(kimrofReducer, {
     values: initialValues,
-    metadata: { isDrty: false, inValid: true },
+    metadata: { isDirty: false, isValid: true },
   })
 
   const context: KimrofContext = useMemo(
     () => ({
       values,
+      metadata,
+      submitForm: () => onSubmit(values as TData),
       setFieldValue: (name: string, value: KimrofProperty) => {
         dispatch({ type: "set-property", payload: { name, value } })
       },
     }),
-    [values]
+    [values, metadata, onSubmit]
   )
 
   return (
